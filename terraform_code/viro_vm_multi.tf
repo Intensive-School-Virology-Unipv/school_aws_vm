@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_instance" "viro-vm" {
     count = var.instance_count
-    ami = "ami-09f0086e65f02e893"
+    ami = "ami-0a61a97321eff5390"
     instance_type = var.instance_type
     security_groups = [ "training-test-01" ]
 
