@@ -1,0 +1,28 @@
+---
+title: "Collect Terraform Outputs"
+author: "Francesco Lescai"
+date: "6/25/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyjson)
+library(tidyverse)
+```
+
+
+# Import TFstate JSON file
+
+```{r import}
+tfstate <- read_json("tf_outputs_example.json")
+outputs <- tibble(
+  instance_id = unlist(tfstate$..JSON[[1]]$outputs$instance_id$value[[1]]),
+  instance_ip = unlist(tfstate$..JSON[[1]]$outputs$instance_public_ip$value[[1]])
+)
+```
+
+
+# Combine with e-mails and send information
