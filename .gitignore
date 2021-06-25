@@ -27,3 +27,13 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
+
+## Files used with R and Rstudio that are unnecessary
+
+*.Rhistory
+**.Rproj.user/*
+*.RData
+
+## Files from the Mac
+
+.DS_Store
