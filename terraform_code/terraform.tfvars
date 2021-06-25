@@ -1,2 +1,2 @@
-instance_count = 1
+instance_count = 3
 instance_type = "t2.large"
