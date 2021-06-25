@@ -11,6 +11,7 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyjson)
 library(tidyverse)
+library(blastula)
 ```
 
 
@@ -25,4 +26,68 @@ outputs <- tibble(
 ```
 
 
-# Combine with e-mails and send information
+
+# Combine with emails
+
+
+```{r combine}
+students <- tibble(
+  name = c("test1", "test2", "test3"),
+  email = c("test.test@test.it", "test.test@test.it", "test.test@test.it")
+)
+
+data <- cbind(outputs, students)
+
+```
+
+
+
+# Send email information
+
+
+```{r email_body}
+
+write_email <- function(row){
+  name = unname(row[["name"]])
+  email = unname(row[["email"]])
+  ip_address = unname(row[["instance_ip"]])
+  email_ad = compose_email(
+                header = md(
+                  "# Summer School Virology
+                  
+                  "
+                ),
+                body = md(
+                  paste0(
+                    "Dear ", name,
+                    "
+                    In order to perform the virtual labs, please connect using the following credentials:
+                    
+                    virtual machine ip = ", ip_address, "
+                    
+                    username = xxxxxxxx
+                    password = nnnnnnnn
+                    
+                    "
+                  )
+                ),
+                footer = md(
+                  "email set on 25/06/2021"
+                )
+              )
+  email_ad %>%
+      smtp_send(
+        to = email,
+        from = "test.test@test.it",
+        subject = "Testing emails",
+        credentials = creds_file("smtp_file")
+      )
+}
+
+```
+
+
+```{r send}
+apply(data, 1, write_email)
+```
+
