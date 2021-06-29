@@ -61,6 +61,15 @@ echo "export PATH=${PATH}:/opt/shared/envs/aws-env/bin" >>/home/ubuntu/.bashrc
 echo "export PATH=${PATH}:/opt/shared/envs/aws-env/bin" >>/home/student/.bashrc
 ```
 
+- make sure the python libraries installed in the conda environment are visible when python is launched
+
+```
+echo "export PYTHONPATH=/opt/shared/envs/aws-env/lib/python3.8/site-packages" >>~/.bashrc
+echo "export PYTHONPATH=/opt/shared/envs/aws-env/lib/python3.8/site-packages" >>/home/ubuntu/.bashrc
+echo "export PYTHONPATH=/opt/shared/envs/aws-env/lib/python3.8/site-packages" >>/home/student/.bashrc
+```
+
+
 - update krona taxonomy as per instructions
 
 - upload all data

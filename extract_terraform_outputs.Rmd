@@ -18,7 +18,8 @@ library(blastula)
 # Import TFstate JSON file
 
 ```{r import}
-tfstate <- read_json("tf_outputs_example.json")
+# tfstate <- read_json("tf_outputs_example.json")
+tfstate <- read_json("~/Google Drive/Didattica_LEZIONI/Virology_SummerSchool2021/VIROSC_CODE/school_code/school_aws_vm/terraform_code/tfstate_20210629_1332.json")
 outputs <- tibble(
   instance_id = unlist(tfstate$..JSON[[1]]$outputs$instance_id$value[[1]]),
   instance_ip = unlist(tfstate$..JSON[[1]]$outputs$instance_public_ip$value[[1]])
@@ -31,10 +32,12 @@ outputs <- tibble(
 
 
 ```{r combine}
-students <- tibble(
-  name = c("test1", "test2", "test3"),
-  email = c("test.test@test.it", "test.test@test.it", "test.test@test.it")
-)
+# students <- tibble(
+#   name = c("test1", "test2", "test3"),
+#   email = c("test.test@test.it", "test.test@test.it", "test.test@test.it")
+# )
+
+students <- read_tsv("students_email.tsv")
 
 data <- cbind(outputs, students)
 
@@ -61,12 +64,18 @@ write_email <- function(row){
                   paste0(
                     "Dear ", name,
                     "
+                    
                     In order to perform the virtual labs, please connect using the following credentials:
                     
                     virtual machine ip = ", ip_address, "
                     
-                    username = xxxxxxxx
-                    password = nnnnnnnn
+                    username = xxx
+                    password = yyy
+                    
+                    In case you wish to use Jupyter, the password is
+                    
+                    
+                    zzz
                     
                     "
                   )
