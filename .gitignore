@@ -37,3 +37,4 @@ override.tf.json
 ## Files from the Mac
 
 .DS_Store
+.Rproj.user

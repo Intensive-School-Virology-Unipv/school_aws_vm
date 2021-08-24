@@ -165,3 +165,11 @@ systemctl enable jupyter
 systemctl start jupyter
 
 ```
+
+Once jupyter has been installed, add also the bash kernel so notebooks can also be run with bash commands as well:
+
+```
+conda activate aws-env
+pip install bash_kernel
+python -m bash_kernel.install
+```
