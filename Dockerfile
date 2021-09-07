@@ -6,8 +6,8 @@ LABEL authors='Francesco Lescai' \
 RUN apt-get update && apt-get install -y procps && apt-get clean -y
 
 # Install the conda environment
-COPY aws_vm_env.yml /
-RUN conda env create -f /aws_vm_env.yml && conda clean -a
+COPY docker_aws-env.yml /
+RUN conda env create -f /docker_aws-env.yml && conda clean -a
 
 # Add conda installation dir to PATH (instead of doing 'conda activate')
 ENV PATH /usr/local/envs/aws-env/bin:$PATH
@@ -27,7 +27,7 @@ WORKDIR /usr/local
 RUN chown -R root:students envs
 RUN chmod -R g+w envs
 
-RUN apt install r-base
+RUN apt-get install r-base
 RUN apt-get install gdebi-core
 WORKDIR /opt
 RUN wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb
@@ -63,7 +63,6 @@ RUN git clone https://github.com/Intensive-School-Virology-Unipv/variant_calling
 
 WORKDIR /
 RUN conda activate aws-env
-RUN pip install bash_kernel
 RUN python -m bash_kernel.install
 
 RUN systemctl daemon-reload
