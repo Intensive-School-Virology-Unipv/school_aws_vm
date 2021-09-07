@@ -20,8 +20,8 @@ jobs:
 
       - name: Build image
         run: |
-          IMAGETAGGED=ghcr.io/nibscbioinformatics/$SOFTWARE:$VERSION
-          docker build --tag $IMAGETAGGED ./software/local/report/.
+          IMAGETAGGED=ghcr.io/Intensive-School-Virology-Unipv/$SOFTWARE:$VERSION
+          docker build --tag $IMAGETAGGED .
 
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ secrets.GITPACKAGE_USER }} --password-stdin
