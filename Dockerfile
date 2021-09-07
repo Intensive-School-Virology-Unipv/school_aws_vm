@@ -14,7 +14,7 @@ ENV PATH /usr/local/envs/aws-env/bin:$PATH
 ENV PYTHONPATH /usr/local/envs/aws-env/lib/python3.8/site-packages
 
 
-RUN mkdir -p /opt/share
+RUN mkdir -p /opt/shared
 RUN groupadd -g 10000 students
 RUN useradd -G students student
 RUN echo 'student:v1r0st3ndt0' | chpasswd
