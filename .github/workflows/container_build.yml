@@ -20,7 +20,7 @@ jobs:
 
       - name: Build image
         run: |
-          IMAGETAGGED=ghcr.io/Intensive-School-Virology-Unipv/$SOFTWARE:$VERSION
+          IMAGETAGGED=ghcr.io/intensive-school-virology-unipv/$SOFTWARE:$VERSION
           docker build --tag $IMAGETAGGED .
 
       - name: Log into GitHub Container Registry
@@ -28,5 +28,5 @@ jobs:
 
       - name: Push image to GitHub Container Registry
         run: |
-          IMAGETAGGED=ghcr.io/Intensive-School-Virology-Unipv/$SOFTWARE:$VERSION
+          IMAGETAGGED=ghcr.io/intensive-school-virology-unipv/$SOFTWARE:$VERSION
           docker push $IMAGETAGGED
