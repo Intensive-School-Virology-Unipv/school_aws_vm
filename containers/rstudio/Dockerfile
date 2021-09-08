@@ -1,13 +1,3 @@
-FROM jupyter/datascience-notebook
-
-# Install the conda environment
-COPY aws_vm_env.yml /
-RUN conda env create -f /aws_vm_env.yml && conda clean -a
-
-# Add conda installation dir to PATH (instead of doing 'conda activate')
-ENV PATH /opt/conda/envs/aws-env/bin:$PATH
-ENV PYTHONPATH /opt/conda/envs/aws-env/lib/python3.8/site-packages
-
 FROM rocker/rstudio
 
 RUN apt-get clean

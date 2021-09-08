@@ -4,9 +4,7 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - "python>=3.4.5"
   - conda-forge::biopython
-  - conda-forge::pandas
   - conda-forge::numpy
   - conda-forge::markdown
   - conda-forge::pymdown-extensions
@@ -24,5 +22,4 @@ dependencies:
   - bioconda::snpeff=4.5covid19
   - bioconda::mafft
   - bioconda::iqtree
-  - conda-forge::matplotlib
 
