@@ -70,10 +70,7 @@ RUN git clone https://github.com/Intensive-School-Virology-Unipv/variant_calling
 RUN git clone https://github.com/Intensive-School-Virology-Unipv/variant_calling_data.git
 
 WORKDIR /
-# RUN __conda_setup="$('/usr/local/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"; eval "$__conda_setup"
-RUN /usr/local/bin/conda init bash
-RUN /usr/local/bin/conda activate aws-env
-RUN python -m bash_kernel.install
+RUN /usr/local/envs/aws-env/bin/python -m bash_kernel.install
 RUN systemctl daemon-reload
 RUN systemctl enable jupyter
 ENTRYPOINT systemctl start jupyter && rstudio-server start && /bin/bash
