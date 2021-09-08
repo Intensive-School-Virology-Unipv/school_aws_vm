@@ -46,6 +46,10 @@ RUN Rscript -e "BiocManager::install(c('msa', 'seqinr', 'plotly'))"
 
 RUN jupyter notebook --generate-config
 RUN echo "c.NotebookApp.password = 'argon2:\$argon2id\$v=19\$m=10240,t=10,p=8\$2CeoiDPrjDLbQzuqLJ4iIg\$dF2zXRg2Dlln5xvMsEaHXQ'" | tee -a /root/.jupyter/jupyter_notebook_config.py > /dev/null
+RUN mkdir -p /home/student/.jupyter
+USER student
+RUN jupyter notebook --generate-config
+USER root
 RUN echo "c.NotebookApp.password = 'argon2:\$argon2id\$v=19\$m=10240,t=10,p=8\$2CeoiDPrjDLbQzuqLJ4iIg\$dF2zXRg2Dlln5xvMsEaHXQ'" >>/home/student/.jupyter/jupyter_notebook_config.py
 
 COPY jupyter.service /etc/systemd/system/
