@@ -27,8 +27,12 @@ WORKDIR /usr/local
 RUN chown -R root:students envs
 RUN chmod -R g+w envs
 
-RUN apt-get install -y r-base
 RUN apt-get install -y gdebi-core wget
+RUN apt-get install -y --no-install-recommends software-properties-common dirmngr
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+RUN apt-get install -y --no-install-recommends r-base
+
 WORKDIR /opt
 RUN wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb
 RUN gdebi rstudio-server-1.4.1717-amd64.deb
