@@ -28,7 +28,7 @@ RUN chown -R root:students envs
 RUN chmod -R g+w envs
 
 RUN apt-get install -y r-base
-RUN apt-get install -y gdebi-core
+RUN apt-get install -y gdebi-core wget
 WORKDIR /opt
 RUN wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb
 RUN gdebi rstudio-server-1.4.1717-amd64.deb
