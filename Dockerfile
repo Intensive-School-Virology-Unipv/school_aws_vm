@@ -73,4 +73,4 @@ WORKDIR /
 RUN /usr/local/envs/aws-env/bin/python -m bash_kernel.install
 RUN apt-get install -y systemd
 RUN mkdir -p /opt/shared/jupyter/notebook
-ENTRYPOINT /etc/init.d/dbus start && systemctl daemon-reload && systemctl enable jupyter && systemctl start jupyter && rstudio-server start && /bin/bash
+ENTRYPOINT /etc/init.d/dbus start && systemctl daemon-reload && systemctl enable jupyter && rstudio-server start && /bin/bash
