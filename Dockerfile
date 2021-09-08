@@ -33,7 +33,7 @@ WORKDIR /opt
 RUN wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb
 RUN gdebi rstudio-server-1.4.1717-amd64.deb
 
-RUN Rscript -e "install.packages('BiocManager')"
+RUN Rscript -e "install.packages('BiocManager', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "BiocManager::install(c('tidyverse', 'Gviz', 'VariantAnnotation', 'GenomicFeatures', 'rtracklayer', 'Biostrings', 'knitr'))"
 RUN Rscript -e "BiocManager::install(c('ggtree'))"
 RUN Rscript -e "BiocManager::install(c('msa', 'seqinr', 'plotly'))"
