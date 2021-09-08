@@ -3,7 +3,7 @@ name: Build Jupyter
 on:
   push:
     paths:
-      - ./containers/rstudio/Dockerfile
+      - ./containers/jupyter/Dockerfile
       - ./containers/jupyter/docker_env.yml
       - .github/workflows/jupyter_container_build.yml
 
