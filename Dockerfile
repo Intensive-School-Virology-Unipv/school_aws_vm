@@ -33,20 +33,19 @@ WORKDIR /opt
 RUN wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb
 RUN gdebi rstudio-server-1.4.1717-amd64.deb
 
-RUN apt-get install -y  libcurl4-openssl-dev
+RUN apt-get install -y  libcurl4-openssl-dev libfontconfig1-dev libxml2 libxml2-dev
 
 RUN Rscript -e "install.packages('BiocManager', repos = 'https://cloud.r-project.org')"
-RUN Rscript -e "BiocManager::install(c('tidyverse', 'Gviz', 'VariantAnnotation', 'GenomicFeatures', 'rtracklayer', 'Biostrings', 'knitr'))"
-RUN Rscript -e "BiocManager::install(c('ggtree'))"
-RUN Rscript -e "BiocManager::install(c('msa', 'seqinr', 'plotly'))"
+RUN Rscript -e "options(download.file.method = 'libcurl'); BiocManager::install(c('tidyverse', 'Gviz', 'VariantAnnotation', 'GenomicFeatures', 'rtracklayer', 'Biostrings', 'knitr'))"
+RUN Rscript -e "options(download.file.method = 'libcurl'); BiocManager::install(c('ggtree'))"
+RUN Rscript -e "options(download.file.method = 'libcurl'); BiocManager::install(c('msa', 'seqinr', 'plotly'))"
 RUN Rscript -e "install.packages('kableExtra', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "install.packages('remotes', repos = 'https://cloud.r-project.org')"
-RUN Rscript -e "BiocManager::install(c('msa', 'seqinr', 'plotly'))"
+RUN Rscript -e "options(download.file.method = 'libcurl'); BiocManager::install(c('msa', 'seqinr', 'plotly'))"
 
 
 RUN jupyter notebook --generate-config
 RUN echo "c.NotebookApp.password = 'argon2:\$argon2id\$v=19\$m=10240,t=10,p=8\$2CeoiDPrjDLbQzuqLJ4iIg\$dF2zXRg2Dlln5xvMsEaHXQ'" | tee -a /root/.jupyter/jupyter_notebook_config.py > /dev/null
-RUN mkdir -p /home/student/.jupyter
 USER student
 RUN jupyter notebook --generate-config
 USER root
