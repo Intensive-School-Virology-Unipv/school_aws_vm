@@ -61,6 +61,7 @@ RUN echo "c.NotebookApp.ip = '*'" >>/home/student/.jupyter/jupyter_notebook_conf
 
 RUN mkdir -p /opt/shared/DATA
 WORKDIR /opt/shared/DATA
+RUN apt-get install -y git
 RUN git clone https://github.com/Intensive-School-Virology-Unipv/metaviromics_class.git
 RUN git clone https://github.com/Intensive-School-Virology-Unipv/metaviromics_data.git
 RUN git clone https://github.com/Intensive-School-Virology-Unipv/new_variants_class.git
