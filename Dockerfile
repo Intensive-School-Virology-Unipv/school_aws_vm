@@ -1,5 +1,6 @@
 FROM rocker/rstudio
 
+RUN apt-get install -y  libcurl4-openssl-dev libfontconfig1-dev libxml2 libxml2-dev libz-dev
 
 RUN Rscript -e "install.packages('BiocManager', repos = 'https://cloud.r-project.org')"
 RUN Rscript -e "BiocManager::install(c('tidyverse', 'Gviz', 'VariantAnnotation', 'GenomicFeatures', 'rtracklayer', 'Biostrings', 'knitr'))"
