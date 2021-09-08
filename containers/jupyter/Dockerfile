@@ -28,6 +28,7 @@ RUN conda install --quiet --yes conda-forge::biopython \
     fix-permissions "/home/${NB_USER}"
 
 # Add conda installation dir to PATH (instead of doing 'conda activate')
+
 # ENV PATH /opt/conda/envs/aws-env/bin:$PATH
 # ENV PYTHONPATH /opt/conda/envs/aws-env/lib/python3.8/site-packages
 
