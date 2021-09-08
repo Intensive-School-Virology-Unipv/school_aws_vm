@@ -70,7 +70,8 @@ RUN git clone https://github.com/Intensive-School-Virology-Unipv/variant_calling
 RUN git clone https://github.com/Intensive-School-Virology-Unipv/variant_calling_data.git
 
 WORKDIR /
-RUN __conda_setup="$('/usr/local/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"; eval "$__conda_setup"
+# RUN __conda_setup="$('/usr/local/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"; eval "$__conda_setup"
+RUN conda init shell.bash
 RUN conda activate aws-env
 RUN python -m bash_kernel.install
 
