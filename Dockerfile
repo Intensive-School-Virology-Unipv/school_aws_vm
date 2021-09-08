@@ -74,4 +74,4 @@ RUN /usr/local/envs/aws-env/bin/python -m bash_kernel.install
 RUN apt-get install -y systemd
 # RUN systemctl daemon-reload
 RUN systemctl enable jupyter
-ENTRYPOINT systemctl start jupyter && rstudio-server start && /bin/bash
+# ENTRYPOINT systemctl start jupyter && rstudio-server start && /bin/bash
