@@ -1,194 +1,79 @@
-# Setup of the base Virtual Machine AMI
+# Intensive School on Emerging Viral Threats
 
-## 1. Launch the VM
+## Table of Contents
+
+* [Setting up AWS Virtual Machine](#setting-up-aws)
+* [Running a Docker container](#running-docker)
+    * [Installing docker](#installing-docker)
+    * [Running the container](#running-the-container)
+    * [Using Jupyter](#using-jupyter)
+    * [Using RStudio](#using-rstudio)
 
 
-- in the console we have selected **t2.large** because we need at least 2 cores and at least 6GB memory
-- we have left networking as default
-- we have added a 50GB root volume and left "delete on termination" option on
-- **important** we have added TAGs to enable cost monitoring: use = virology summer school and step = setup
-- security group: we have used existing training test
+
+## Setting up AWS
+
+A detailed setup for the Amazon Virtual machine can be found [here](setup_vm.md)
 
 
-## 2. Configure the VM
+## Running Docker
 
-- once the VM is running, connect from within the AWS account
-- create a shared folder for users to access with ```sudo -s``` first and ```mkdir -p /opt/share``` afterwards
-- create students group with ```groupadd -g 10000 students```
-- add student users to group with ```useradd -G students student```
-- create password for student
-- change group ownership to opt/shared with ```chown -R root:students shared```
-- change permissions to folder with ```chmod -R g+w shared```
-- install anaconda prerequisites
+Students who wish to keep exercising, following the virtual labs can use our Docker container, as explained below.
 
-```
-apt-get update
+### Installing Docker
 
-apt-get install -y \
-libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+Depending on the OS you are running, installation instructions might vary.
 
-wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh .
+Please, do follow the detailed guide available on Docker [website](https://docs.docker.com/get-docker/)
 
-bash Anaconda3-2021.05-Linux-x86_64.sh
+### Running the container
 
-```
+Once you have Docker up and running, you can download our container using the following command:
 
-- install anaconda on a shared path ```/opt/shared/anaconda```
-- add conda initialisation script to *.bashrc* of student and ubuntu
-- configure *.condarc* in */opt/shared/anaconda* to specify default channels and env_dirs as follows:
-
-```
-envs_dirs:
-  - /opt/shared/envs
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
+```{bash}
+docker pull ghcr.io/intensive-school-virology-unipv/viroschool:v1.00
 ```
 
-- change permissions of env folder ```chown -R root:students envs``` and ```chmod -R g+w envs```
-- create the environment for the school with ```conda env create -f aws_vm_env.yml```
+Then, docker can be run in detatched mode, making sure you expose the necessary ports:
 
-NB: when a large number of tools is included in the environment, it might take a long time to resolve all compatible versions to be combined into the env.
 
-- once the environment is created, it is convenient to export its file in order to have all versions already resolved in case it should be reused.
-
-- add the conda environment to path for all users
-
-```
-echo "export PATH=${PATH}:/opt/shared/envs/aws-env/bin" >>~/.bashrc
-echo "export PATH=${PATH}:/opt/shared/envs/aws-env/bin" >>/home/ubuntu/.bashrc
-echo "export PATH=${PATH}:/opt/shared/envs/aws-env/bin" >>/home/student/.bashrc
+```{bash}
+docker run -d --rm \
+-p 127.0.0.1:8787:8787 \
+-p 8888:8888 \
+-v "${PWD}"/jupyter:/home/jovyan/work \
+-v "${PWD}"/rstudio:/home/rstudio \
+-e DISABLE_AUTH=true \
+ghcr.io/intensive-school-virology-unipv/viroschool:v1.00
 ```
 
-- update krona taxonomy as per instructions
+Please note, in the above example we have made available 2 folders in the directory you're launching the command from: one is for RStudio and one is for Jupyter notebooks.
 
-- upload all data
-- install RStudio Server
+In order to verify the container is up and running, you can type:
 
-```
-apt install r-base
-apt-get install gdebi-core
-wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb
-gdebi rstudio-server-1.4.1717-amd64.deb
+
+```{bash}
+docker ps
 ```
 
-- packages should be installed on the student users so they will be available without problems during the class
+This command is also important to get the container ID.
 
-Install dependencies in libraries
+### Using Jupyter
 
-```
-apt-get install -y \
-  libcurl4-openssl-dev \
-  libssl-dev \
-  libfontconfig1-dev \
-  libxml2-dev
-```
+When Jupyter is started, a token is printed on screen with the authentication to the notebook. We need to grab this token from the logs, since we started the container in a detatched mode.
 
-Install packages as required
+We can do this following this command:
 
-```
-R
-install.packages("BiocManager")
-BiocManager::install(c("tidyverse", "Gviz", "VariantAnnotation", "GenomicFeatures", "rtracklayer", "Biostrings", "knitr"))
-BiocManager::install(c('ggtree'))
-BiocManager::install(c('msa', 'seqinr', 'plotly'))
-install.packages('kableExtra', repos = 'https://cloud.r-project.org')
-install.packages('remotes', repos = 'https://cloud.r-project.org')
-BiocManager::install(c('msa', 'seqinr', 'plotly'))
-
-## test if they install
-library(tidyverse)
-library(Gviz)
-library(VariantAnnotation)
-library(Biostrings)
-library(ggtree)
-library(msa)
-library(plotly)
-library(msa)
+```{bash}
+docker logs --tail 3 CONTAINERID
 ```
 
-- enable password authentication on VM
+this will point to something like:
 
 ```
-vim /etc/ssh/sshd_config
-```
-and change to *yes*
-
-- setup jupyter notebook
-
-```
-jupyter notebook --generate-config
-echo "c.NotebookApp.password = 'argon2:\$argon2id\$v=19\$m=10240,t=10,p=8\$2CeoiDPrjDLbQzuqLJ4iIg\$dF2zXRg2Dlln5xvMsEaHXQ'" | sudo tee -a /root/.jupyter/jupyter_notebook_config.py > /dev/null
-echo "c.NotebookApp.password = 'argon2:\$argon2id\$v=19\$m=10240,t=10,p=8\$2CeoiDPrjDLbQzuqLJ4iIg\$dF2zXRg2Dlln5xvMsEaHXQ'" >>/home/ubuntu/.jupyter/jupyter_notebook_config.py
-echo "c.NotebookApp.password = 'argon2:\$argon2id\$v=19\$m=10240,t=10,p=8\$2CeoiDPrjDLbQzuqLJ4iIg\$dF2zXRg2Dlln5xvMsEaHXQ'" >>/home/student/.jupyter/jupyter_notebook_config.py
-
-
-cat << EOF >jupyter.service
-
-[Unit]
-Description=Jupyter Notebook
-
-[Service]
-Type=simple
-PIDFile=/run/jupyter.pid
-ExecStart=jupyter lab --notebook-dir=/opt/shared/jupyter/notebook
-User=student
-Group=student
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-
-EOF
-
-mv jupyter.service /etc/systemd/system/.
-
-
-echo "c.NotebookApp.ip = '*'" | sudo tee -a /root/.jupyter/jupyter_notebook_config.py > /dev/null
-echo "c.NotebookApp.ip = '*'" >>/home/ubuntu/.jupyter/jupyter_notebook_config.py
-echo "c.NotebookApp.ip = '*'" >>/home/student/.jupyter/jupyter_notebook_config.py
-
-
-systemctl daemon-reload
-systemctl enable jupyter
-systemctl start jupyter
-
+or http://127.0.0.1:8888/?token=abd4122c459c43ccede675a5c65e837d90b1f6b9be64e1ce
 ```
 
+You can use that URL in your browser.
 
-## 3. Create AMI
-
-From the AWS console, we select the running VM and and select:
-
-actions -> image and templates -> create image
-
-We have to assign proper tags, for the resource to be recognised in cost explorer.
-In this case we select:
-
-- use = Summer School Virology
-- step = VM image
-
-We then take note of the AMI ID just created, to be used in terraform.
-
-
-## 4. Deploy test
-
-Following the code in the */terraform* folder, we can now use the existing AMI to create as many resources as we need.
-
-We have to use a terminal and position ourselves in the terraform folder and then follow these steps:
-
-```
-terraform init
-terraform plan -out deploy-test.plan
-terraform apply deploy-test.plan
-```
-
-And test different functionalities such as:
-
-- RStudio server and package loading
-- Jupyter Lab and python notebook or correct launch of software from terminal
-- SSH to the machine
-
-Once this is done we can simply run ```terraform destroy``` on the folder and remove the instance.
+### Using Rstudio
