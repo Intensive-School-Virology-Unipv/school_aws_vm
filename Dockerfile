@@ -72,6 +72,5 @@ RUN git clone https://github.com/Intensive-School-Virology-Unipv/variant_calling
 WORKDIR /
 RUN /usr/local/envs/aws-env/bin/python -m bash_kernel.install
 RUN apt-get install -y systemd
-# RUN systemctl daemon-reload
-RUN systemctl enable jupyter
-# ENTRYPOINT systemctl start jupyter && rstudio-server start && /bin/bash
+RUN mkdir -p /opt/shared/jupyter/notebook
+ENTRYPOINT /etc/init.d/dbus start && systemctl daemon-reload && systemctl enable jupyter && systemctl start jupyter && rstudio-server start && /bin/bash
