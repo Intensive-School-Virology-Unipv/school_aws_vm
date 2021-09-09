@@ -42,7 +42,7 @@ Should this not be the case, please do modify the following command appropriatel
 docker run -d --rm \
 -p 8888:8888 \
 -v "${PWD}"/jupyter:/home/jovyan/work \
-ghcr.io/intensive-school-virology-unipv/jupyter:v1.00
+ghcr.io/intensive-school-virology-unipv/jupyter:main
 ```
 
 In order to verify the container is up and running, you can type:
@@ -89,7 +89,7 @@ docker run -d --rm \
 -p 127.0.0.1:8787:8787 \
 -v "${PWD}"/rstudio:/home/rstudio/local \
 -e DISABLE_AUTH=true \
-ghcr.io/intensive-school-virology-unipv/rstudio:v1.00
+ghcr.io/intensive-school-virology-unipv/rstudio:main
 ```
 
 The school code and data is located in the container at the path ```/opt/shared/DATA```: you can navigate through the RStudio interface to this location and retrieve the notebook you need.
