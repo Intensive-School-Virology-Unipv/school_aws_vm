@@ -72,6 +72,8 @@ or http://127.0.0.1:8888/?token=abd4122c459c43ccede675a5c65e837d90b1f6b9be64e1ce
 You can use that URL in your browser.
 The notebook will open where the code and data from the virtual laboratories has been saved.
 
+:warning: **all data and code are located in /opt/shared/DATA**: this might be different from the code we have used on Amazon Cloud. Keep this in mind when executing the notebook code, and change file path where needed.
+
 ### Using Rstudio
 
 In order to use RStudio server, you should run the *rstudio* container with the command below.
@@ -93,5 +95,7 @@ ghcr.io/intensive-school-virology-unipv/rstudio:main
 ```
 
 The school code and data is located in the container at the path ```/opt/shared/DATA```: you can navigate through the RStudio interface to this location and retrieve the notebook you need.
+:warning: this might require code changes, compared to the one we have used on Amazon Cloud. Keep this in mind when executing the notebook code, and change file path where needed.
 
-:warning: The RStudio container unfortunately does **not** render properly on Apple M1 chip computers.
+
+:no_entry: The RStudio container unfortunately does **not** render properly on Apple M1 chip computers.
