@@ -5,7 +5,6 @@
 * [Setting up AWS Virtual Machine](#setting-up-aws)
 * [Running a Docker container](#running-docker)
     * [Installing docker](#installing-docker)
-    * [Running the container](#running-the-container)
     * [Using Jupyter](#using-jupyter)
     * [Using RStudio](#using-rstudio)
 
@@ -26,28 +25,25 @@ Depending on the OS you are running, installation instructions might vary.
 
 Please, do follow the detailed guide available on Docker [website](https://docs.docker.com/get-docker/)
 
-### Running the container
 
-Once you have Docker up and running, you can download our container using the following command:
+### Using Jupyter
 
-```{bash}
-docker pull ghcr.io/intensive-school-virology-unipv/viroschool:v1.00
-```
+In order to access the Jupyter notebooks, you need to run the *jupyter* container.
 
-Then, docker can be run in detatched mode, making sure you expose the necessary ports:
+You can do so, by using the following command. This assumes:
+
+- you will connect through your browser, at the URL *localhost:8888*
+- you have a folder called *jupyter* in the folder you are launching the command from
+
+Should this not be the case, please do modify the following command appropriately:
 
 
 ```{bash}
 docker run -d --rm \
--p 127.0.0.1:8787:8787 \
 -p 8888:8888 \
 -v "${PWD}"/jupyter:/home/jovyan/work \
--v "${PWD}"/rstudio:/home/rstudio \
--e DISABLE_AUTH=true \
-ghcr.io/intensive-school-virology-unipv/viroschool:v1.00
+ghcr.io/intensive-school-virology-unipv/jupyter:v1.00
 ```
-
-Please note, in the above example we have made available 2 folders in the directory you're launching the command from: one is for RStudio and one is for Jupyter notebooks.
 
 In order to verify the container is up and running, you can type:
 
@@ -58,11 +54,10 @@ docker ps
 
 This command is also important to get the container ID.
 
-### Using Jupyter
 
 When Jupyter is started, a token is printed on screen with the authentication to the notebook. We need to grab this token from the logs, since we started the container in a detatched mode.
 
-We can do this following this command:
+We can do this using the container ID you grabbed in the previous step in the following command:
 
 ```{bash}
 docker logs --tail 3 CONTAINERID
@@ -75,5 +70,26 @@ or http://127.0.0.1:8888/?token=abd4122c459c43ccede675a5c65e837d90b1f6b9be64e1ce
 ```
 
 You can use that URL in your browser.
+The notebook will open where the code and data from the virtual laboratories has been saved.
 
 ### Using Rstudio
+
+In order to use RStudio server, you should run the *rstudio* container with the command below.
+
+This assumes:
+
+- you will connect through your browser, at the URL *localhost:8787*
+- you have a folder called *rstudio* in the folder you are launching the command from
+- this will be mapped in the home of Rstudio under the name *local*
+
+Should this not be the case, please do modify the following command appropriately:
+
+```{bash}
+docker run -d --rm \
+-p 127.0.0.1:8787:8787 \
+-v "${PWD}"/rstudio:/home/rstudio/local \
+-e DISABLE_AUTH=true \
+ghcr.io/intensive-school-virology-unipv/rstudio:v1.00
+```
+
+The school code and data is located in the container at the path ```/opt/shared/DATA```: you can navigate through the RStudio interface to this location and retrieve the notebook you need.
