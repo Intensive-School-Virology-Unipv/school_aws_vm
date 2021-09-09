@@ -12,7 +12,7 @@ env:
   SOFTWARE: jupyter
   VERSION: v1.00
 
-obs:
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
