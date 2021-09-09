@@ -3,7 +3,7 @@ name: Build RStudio
 on:
   push:
     paths:
-      - ./containers/rstudio/Dockerfile
+      - containers/rstudio/Dockerfile
       - .github/workflows/rstudio_container_build.yml
 
 env:
@@ -15,15 +15,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@master
+        with:
+          platforms: all
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+        with:
+          install: true
+
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+      
       - name: Build image
         run: |
           IMAGETAGGED=ghcr.io/intensive-school-virology-unipv/$SOFTWARE:$VERSION
           docker build --tag $IMAGETAGGED ./containers/$SOFTWARE/.
-
-      - name: Log into GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push image to GitHub Container Registry
         run: |
