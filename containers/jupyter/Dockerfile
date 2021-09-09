@@ -28,10 +28,12 @@ RUN conda install --quiet --yes conda-forge::biopython \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-# Add conda installation dir to PATH (instead of doing 'conda activate')
+## Add the bash kernel to python notebooks
+RUN pip install --quiet --no-cache-dir bash_kernel && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+RUN python -m bash_kernel.install
 
-# ENV PATH /opt/conda/envs/aws-env/bin:$PATH
-# ENV PYTHONPATH /opt/conda/envs/aws-env/lib/python3.8/site-packages
 
 USER root
 RUN mkdir -p /opt/shared/DATA

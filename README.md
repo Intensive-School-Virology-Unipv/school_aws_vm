@@ -93,3 +93,5 @@ ghcr.io/intensive-school-virology-unipv/rstudio:main
 ```
 
 The school code and data is located in the container at the path ```/opt/shared/DATA```: you can navigate through the RStudio interface to this location and retrieve the notebook you need.
+
+:warning: The RStudio container unfortunately does **not** render properly on Apple M1 chip computers.
