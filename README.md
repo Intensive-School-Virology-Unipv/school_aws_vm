@@ -17,7 +17,7 @@ A detailed setup for the Amazon Virtual machine can be found [here](setup_vm.md)
 
 ## Running Docker
 
-Students who wish to keep exercising, following the virtual labs can use our Docker container, as explained below.
+Students who wish to keep practicing and review the virtual labs, can use our Docker container, as explained below.
 
 ### Installing Docker
 
@@ -95,7 +95,10 @@ ghcr.io/intensive-school-virology-unipv/rstudio:main
 ```
 
 The school code and data is located in the container at the path ```/opt/shared/DATA```: you can navigate through the RStudio interface to this location and retrieve the notebook you need.
+
+
 :warning: this might require code changes, compared to the one we have used on Amazon Cloud. Keep this in mind when executing the notebook code, and change file path where needed.
+
 
 
 :no_entry: The RStudio container unfortunately does **not** render properly on Apple M1 chip computers.
