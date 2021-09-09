@@ -3,7 +3,8 @@ FROM jupyter/datascience-notebook
 # Install the conda environment
 # COPY docker_env.yml /
 # RUN conda env create -f /docker_env.yml && conda clean -a
-RUN conda config --system --prepend channels defaults bioconda
+RUN conda config --system --prepend channels bioconda
+RUN conda config --system --prepend channels defaults
 
 RUN conda install --quiet --yes conda-forge::biopython \
     conda-forge::numpy \
